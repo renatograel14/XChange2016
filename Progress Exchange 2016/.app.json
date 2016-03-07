@@ -131,6 +131,32 @@
       "title": "Conferências",
       "addToNavigation": true,
       "icon": "globe"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "agenda",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "components": [],
+          "name": "agendaModel",
+          "dataProvider": "demoAppBackend",
+          "collection": "Workshops",
+          "headerField": "name",
+          "subHeaderField": "presenter",
+          "group": "date",
+          "addItemForm": false,
+          "editItemForm": false,
+          "pullToRefresh": false,
+          "endlessScroll": false,
+          "deleteItemButton": true
+        }
+      ],
+      "title": "Agenda",
+      "addToNavigation": true,
+      "icon": "organize"
     }
   ],
   "dataProviders": [

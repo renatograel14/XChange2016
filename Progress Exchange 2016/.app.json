@@ -4,16 +4,147 @@
     {
       "type": "kendo-ui-mobile:view",
       "name": "home",
-      "components": [],
+      "components": [
+        {
+          "type": "kendo-ui-mobile:about",
+          "name": "homeModel",
+          "appIcon": "fundo  branco exchange.jpg",
+          "appDescription": "App description",
+          "contactButton": true,
+          "contactLabel": "Contact us",
+          "contactMail": "support@example.com",
+          "facebookButton": true,
+          "facebookLabel": "Like us on Facebook",
+          "facebookLink": "https://www.facebook.com/Telerik",
+          "twitterButton": true,
+          "twitterLabel": "Follow us on Twitter",
+          "twitterLink": "https://twitter.com/telerik"
+        }
+      ],
       "title": "Home View",
       "addToNavigation": true,
       "icon": "home"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "login",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:authentication",
+          "name": "loginModel",
+          "dataProvider": "demoAppBackend",
+          "emailLabel": "Email",
+          "passwordLabel": "Password",
+          "signinLabel": "Sign In",
+          "signinRedirect": "home",
+          "enableRegistration": true,
+          "gotoRegisterLabel": "Register",
+          "registerEmailLabel": "Email",
+          "registerPasswordLabel": "Password",
+          "registerNameLabel": "Name",
+          "registerLabel": "Register",
+          "registerRedirect": "home",
+          "gotoSigninLabel": "Sign In"
+        }
+      ],
+      "title": "Login Exchange",
+      "addToNavigation": false
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "location",
+      "components": [],
+      "title": "Localização",
+      "addToNavigation": true,
+      "icon": "action"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "workshops",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "components": [
+            {
+              "type": "kendo-ui-mobile:editableListForm",
+              "components": [],
+              "name": "editableListForm2",
+              "formType": "add"
+            }
+          ],
+          "name": "workshopsModel",
+          "dataProvider": "demoAppBackend",
+          "collection": "Workshops",
+          "headerField": "name",
+          "subHeaderField": "presenter",
+          "group": "date",
+          "detailHeaderField": "date",
+          "detailSubHeaderField": "name",
+          "detailDescriptionField": "description",
+          "detailImageField": "photo",
+          "addItemForm": true,
+          "editItemForm": false,
+          "pullToRefresh": false,
+          "endlessScroll": false,
+          "deleteItemButton": false
+        }
+      ],
+      "title": "Workshops",
+      "addToNavigation": true,
+      "icon": "organize"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "conferences",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "components": [
+            {
+              "type": "kendo-ui-mobile:editableListForm",
+              "components": [],
+              "name": "editableListForm12",
+              "formType": "add"
+            }
+          ],
+          "name": "conferencesModel",
+          "dataProvider": "demoAppBackend",
+          "collection": "Conference",
+          "headerField": "name",
+          "subHeaderField": "presenter",
+          "group": "date",
+          "detailHeaderField": "date",
+          "detailSubHeaderField": "name",
+          "detailDescriptionField": "description",
+          "detailImageField": "photo",
+          "addItemForm": true,
+          "editItemForm": false,
+          "pullToRefresh": false,
+          "endlessScroll": false,
+          "deleteItemButton": false
+        }
+      ],
+      "title": "Conferências",
+      "addToNavigation": true,
+      "icon": "globe"
     }
   ],
-  "dataProviders": [],
+  "dataProviders": [
+    {
+      "type": "kendo-ui-mobile:dataProvider",
+      "name": "demoAppBackend",
+      "title": "DEMO APP Backend / DEMO APP Backend",
+      "source": "everlive",
+      "everliveKey": "7rdaqt8mej77w11z",
+      "offlineStorage": true
+    }
+  ],
   "name": "kendoUiMobileApp",
-  "navigation": "tabstrip",
+  "navigation": "drawer",
   "view": "home",
-  "transition": "slide",
-  "skin": "flat"
+  "skin": "native"
 }

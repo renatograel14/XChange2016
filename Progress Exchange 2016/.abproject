@@ -1,0 +1,45 @@
+{
+  "ProjectName": "Progress Exchange 2016",
+  "ProjectGuid": "70968330-e51d-4a45-9a7e-7bb99fc0eec8",
+  "projectVersion": 1,
+  "AppIdentifier": "com.telerik.ProgressExchange2016",
+  "DisplayName": "Progress Exchange 2016",
+  "Author": "",
+  "Description": "Progress Exchange 2016",
+  "BundleVersion": "1.0",
+  "AndroidVersionCode": "1",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "FrameworkVersion": "3.7.0",
+  "AndroidPermissions": [
+    "android.permission.INTERNET"
+  ],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "AndroidHardwareAcceleration": "false",
+  "iOSStatusBarStyle": "Default",
+  "Framework": "Cordova",
+  "WP8TileTitle": "",
+  "WP8Publisher": "",
+  "WP8Capabilities": [
+    "ID_CAP_NETWORKING",
+    "ID_CAP_WEBBROWSERCOMPONENT"
+  ],
+  "WP8Requirements": [],
+  "WP8PublisherID": "{3e159754-3f2d-4e2a-b196-ca727efe1951}",
+  "WP8ProductID": "{8ed5fd32-9e91-40ae-bd13-e77561c27368}",
+  "WPSdk": "8.0",
+  "WP8PackageIdentityName": "1234Telerik.ProgressExchange2016",
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ]
+}

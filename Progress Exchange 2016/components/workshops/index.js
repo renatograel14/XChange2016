@@ -11,6 +11,7 @@ app.workshops = kendo.observable({
 // END_CUSTOM_CODE_workshops
 (function(parent) {
     var dataProvider = app.data.demoAppBackend,
+        agendaDataSource = app.data.localStorage,
         processImage = function(img) {
             if (!img) {
                 var empty1x1png = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=';
@@ -86,7 +87,17 @@ app.workshops = kendo.observable({
                 app.mobileApp.navigate('#components/workshops/details.html?uid=' + e.dataItem.uid);
             },
             addClick: function() {
-                app.mobileApp.navigate('#components/workshops/add.html');
+                console.log(agendaDataSource);
+                agendaDataSource.add(this.currentItem);
+
+                agendaDataSource.one('sync', function(e) {
+                    alert("Salvo na agenda!");
+                    app.mobileApp.navigate('#:back');
+                
+                });
+
+                agendaDataSource.sync();
+
             },
             detailsShow: function(e) {
                 var item = e.view.params.uid,
@@ -104,24 +115,6 @@ app.workshops = kendo.observable({
             currentItem: null
         });
 
-    parent.set('addItemViewModel', kendo.observable({
-        onShow: function(e) {
-            // Reset the form data.
-            this.set('addFormData', {});
-        },
-        onSaveClick: function(e) {
-            var addFormData = this.get('addFormData'),
-                dataSource = workshopsModel.get('dataSource');
-
-            dataSource.add({});
-
-            dataSource.one('change', function(e) {
-                app.mobileApp.navigate('#:back');
-            });
-
-            dataSource.sync();
-        }
-    }));
 
     if (typeof dataProvider.sbProviderReady === 'function') {
         dataProvider.sbProviderReady(function dl_sbProviderReady() {

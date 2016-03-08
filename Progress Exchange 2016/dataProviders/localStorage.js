@@ -4,7 +4,25 @@
 (function () {
 
 
-	
+	var flattenLocationProperties = function(dataItem) {
+		var propName, propValue, 
+		isLocation = function(value) {
+			return propValue && typeof propValue === 'object' &&
+			propValue.longitude && propValue.latitude;
+		};
+
+		for (propName in dataItem) {
+			if (dataItem.hasOwnProperty(propName)) {
+				propValue = dataItem[propName];
+				if (isLocation(propValue)) {
+					dataItem[propName] =
+					kendo.format('Latitude: {0}, Longitude: {1}',
+						propValue.latitude, propValue.longitude);
+				}
+			}
+		}
+	};
+
 
 	app.data.setData = function(){
 		localStorage["agenda"] = JSON.stringify([]);
@@ -39,6 +57,14 @@
 				options.success(options.data);
 			}
 		},
+		change: function(e) {
+			var data = this.data();
+			for (var i = 0; i < data.length; i++) {
+				var dataItem = data[i];
+
+				flattenLocationProperties(dataItem);
+			}
+		},
 		schema: {
 			model: {
 				id: "ID",
@@ -49,7 +75,7 @@
 		}
 	});
 
-	if(localStorage["agendas"] == undefined){
+	if(!localStorage["agenda"]){
 		app.data.setData();
 	}
 

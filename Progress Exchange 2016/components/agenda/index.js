@@ -10,7 +10,7 @@ app.agenda = kendo.observable({
 
 // END_CUSTOM_CODE_agenda
 (function(parent) {
-    var dataProvider = app.data.localStorage,
+    var dataProvider = app.data.localStorage.dataSource,
     agendaModel = kendo.observable({
         dataSource: dataProvider,
         listView: $("#listviewAgenda").data("kendoMobileListView"),

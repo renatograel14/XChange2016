@@ -1,51 +1,32 @@
+// logica do local binding
 'use strict';
 
-
 (function () {
-
-
-	var flattenLocationProperties = function(dataItem) {
-		var propName, propValue, 
-		isLocation = function(value) {
-			return propValue && typeof propValue === 'object' &&
-			propValue.longitude && propValue.latitude;
-		};
-
-		for (propName in dataItem) {
-			if (dataItem.hasOwnProperty(propName)) {
-				propValue = dataItem[propName];
-				if (isLocation(propValue)) {
-					dataItem[propName] =
-					kendo.format('Latitude: {0}, Longitude: {1}',
-						propValue.latitude, propValue.longitude);
-				}
-			}
-		}
-	};
-
-
-	app.data.setData = function(){
+	// set data if is undefined
+	// localStorage.clear();
+	if(!localStorage["agenda"]){
+		console.log(localStorage['agenda']);
 		localStorage["agenda"] = JSON.stringify([]);
-	}	
-
-	app.data.resetData = function(){
-		app.data.setData();
-		window.location.reload();
 	}
 
-	var provider = app.data.localStorage = new kendo.data.DataSource({
+
+	var localStorageOptions = {
 		transport: {
 			create: function(options){
+				//function to create a new local record
 				var localData = JSON.parse(localStorage["agenda"]);
 				localData.push(options.data);
 				localStorage["agenda"] = JSON.stringify(localData);
-				options.success(options.data);
+				options.success(options);
+				options.error(options);
 			},
 			read: function(options){
+				// get agenda array
 				var localData = JSON.parse(localStorage["agenda"]);
 				options.success(localData);
 			},
 			destroy: function(options){
+				//delete options.data (record to be deleted)
 				var localData = JSON.parse(localStorage["agenda"]);
 				for(var i=0; i<localData.length; i++){
 					if(options.data.username === localData[i].username){
@@ -57,26 +38,25 @@
 				options.success(options.data);
 			}
 		},
-		change: function(e) {
-			var data = this.data();
-			for (var i = 0; i < data.length; i++) {
-				var dataItem = data[i];
-
-				flattenLocationProperties(dataItem);
-			}
-		},
 		schema: {
-			model: {
-				id: "ID",
-				fields: {
-					ID: { type: "number", editable: false }
-				}
-			}
+			model: {id: 'Id'}
 		}
-	});
-
-	if(!localStorage["agenda"]){
-		app.data.setData();
 	}
 
+	// set dataSource on a global variable
+	app.data.localStorage = {
+		dataSource: new kendo.data.DataSource(localStorageOptions),
+		resetData: function(callback){
+			localStorage.clear();
+			callback();
+		},
+		getAgendaItem: function(record){
+			return {
+				id: record.id,
+				name: record.name,
+				presenter: record.presenter,
+				date: record.date
+			};
+		}
+	}
 })();

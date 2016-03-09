@@ -12,6 +12,7 @@ app.workshops = kendo.observable({
 (function(parent) {
     var dataProvider = app.data.demoAppBackend,
         agendaDataSource = app.data.localStorage,
+
         processImage = function(img) {
             if (!img) {
                 var empty1x1png = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=';
@@ -87,17 +88,13 @@ app.workshops = kendo.observable({
                 app.mobileApp.navigate('#components/workshops/details.html?uid=' + e.dataItem.uid);
             },
             addClick: function() {
-                console.log(agendaDataSource);
-                agendaDataSource.add(this.currentItem);
-
-                agendaDataSource.one('sync', function(e) {
+                console.log(localStorage['agenda']);
+                
+                agendaDataSource.dataSource.add(agendaDataSource.getAgendaItem(workshopsModel.currentItem));
+                agendaDataSource.dataSource.sync().then(function(){ 
                     alert("Salvo na agenda!");
                     app.mobileApp.navigate('#:back');
-                
                 });
-
-                agendaDataSource.sync();
-
             },
             detailsShow: function(e) {
                 var item = e.view.params.uid,

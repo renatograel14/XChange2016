@@ -17,6 +17,10 @@ app.home = kendo.observable({
                 window.event.preventDefault && window.event.preventDefault();
                 window.event.returnValue = false;
             }
+        },
+        reset: function(){
+            app.data.localStorage.resetData();
+            console.log('Data resetted');
         }
     });
 

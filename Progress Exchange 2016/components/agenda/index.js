@@ -10,23 +10,25 @@ app.agenda = kendo.observable({
 
 // END_CUSTOM_CODE_agenda
 (function(parent) {
-    var dataProvider = app.data.localStorage.dataSource,
+    var agendaProvider = app.data.localStorage,
     agendaModel = kendo.observable({
-        dataSource: dataProvider,
+        dataSource: agendaProvider.dataSource,
         listView: $("#listviewAgenda").data("kendoMobileListView"),
         delete: function() {
             // console.log(agendaModel.currentItem);
             var dataSource = agendaModel.get('dataSource');
 
-            if(confirm('Retirar da agenda?')){
-                $("#listviewAgenda").data("kendoMobileListView").remove([this.currentItem]);
-                dataSource.remove(this.currentItem);
-            }
-            
+
+            dataSource.remove(agendaModel.currentItem);
+
+            dataSource.one('sync', function(e) {
+                $("#listviewAgenda").data("kendoMobileListView").remove([agendaModel.currentItem]);
+            });
+
             dataSource.one('error', function() {
                 dataSource.cancelChanges();
             });
-
+            
             dataSource.sync();
         },
         itemClick: function(e) {

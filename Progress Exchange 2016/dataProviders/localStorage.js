@@ -4,32 +4,38 @@
 (function () {
 	// set data if is undefined
 	// localStorage.clear();
-	if(!localStorage["agenda"]){
-		console.log(localStorage['agenda']);
-		localStorage["agenda"] = JSON.stringify([]);
+	function setNew(){
+		if(!localStorage["agenda"]){
+			localStorage["agenda"] = JSON.stringify([]);
+			console.log(localStorage['agenda']);
+		}
 	}
 
 
 	var localStorageOptions = {
 		transport: {
 			create: function(options){
-				//function to create a new local record
+				//função que cria registro local
+				var newItem = options.data;
+				newItem.itemId = options.data.Id;
 				var localData = JSON.parse(localStorage["agenda"]);
-				localData.push(options.data);
-				localStorage["agenda"] = JSON.stringify(localData);
-				options.success(options);
-				options.error(options);
+
+				console.log('added', newItem);
+				localData.push(newItem);
+				localStorage["agenda"] = JSON.stringify(localData);				
+				options.success(newItem);
 			},
 			read: function(options){
-				// get agenda array
+				// pega o array de contatos gravados localmente
 				var localData = JSON.parse(localStorage["agenda"]);
 				options.success(localData);
 			},
 			destroy: function(options){
-				//delete options.data (record to be deleted)
+				console.log('removed', options.data);
+				//apaga registro
 				var localData = JSON.parse(localStorage["agenda"]);
 				for(var i=0; i<localData.length; i++){
-					if(options.data.username === localData[i].username){
+					if(options.data.Id === localData[i].Id){
 						localData.splice(i,1);
 						break;
 					}
@@ -38,25 +44,36 @@
 				options.success(options.data);
 			}
 		},
+		group: { field: "date" },
 		schema: {
-			model: {id: 'Id'}
+			model: {
+				id: "itemId",
+				fields: {
+					itemId: {type: 'string'},
+					Id: {type: 'string'},
+					name: {type: 'string'},
+					presenter: {type: 'string'},
+					date: {type: 'string'}
+				}
+			}
 		}
 	}
 
 	// set dataSource on a global variable
-	app.data.localStorage = {
+	var provider = app.data.localStorage = {
 		dataSource: new kendo.data.DataSource(localStorageOptions),
 		resetData: function(callback){
 			localStorage.clear();
-			callback();
+			setNew();
 		},
 		getAgendaItem: function(record){
 			return {
-				id: record.id,
+				Id: record.Id,
 				name: record.name,
 				presenter: record.presenter,
-				date: record.date
+				date: record.date,
 			};
 		}
 	}
+
 })();

@@ -14,6 +14,7 @@ app.login = kendo.observable({
         mode = 'signin',
         registerRedirect = 'home',
         signinRedirect = 'home',
+        rememberKey = 'xchange_authData_loginModel',
         init = function(error) {
             if (error) {
                 if (error.message) {
@@ -29,11 +30,39 @@ app.login = kendo.observable({
             } else {
                 $(activeView).show().siblings().hide();
             }
+
+            var rememberedData = localStorage ? JSON.parse(localStorage.getItem(rememberKey)) : app[rememberKey];
+            if (rememberedData && rememberedData.email && rememberedData.password) {
+
+                parent.loginModel.set('email', rememberedData.email);
+                parent.loginModel.set('password', rememberedData.password);
+                parent.loginModel.signin();
+            }
         },
         successHandler = function(data) {
-            var redirect = mode === 'signin' ? signinRedirect : registerRedirect;
+            var redirect = mode === 'signin' ? signinRedirect : registerRedirect,
+                model = parent.loginModel || {},
+                logout = model.logout;
 
+            if (logout) {
+                model.set('logout', null);
+            }
             if (data && data.result) {
+                if (logout) {
+                    provider.Users.logout(init, init);
+                    return;
+                }
+                var rememberedData = {
+                    email: model.email,
+                    password: model.password
+                };
+                if (model.rememberme && rememberedData.email && rememberedData.password) {
+                    if (localStorage) {
+                        localStorage.setItem(rememberKey, JSON.stringify(rememberedData));
+                    } else {
+                        app[rememberKey] = rememberedData;
+                    }
+                }
                 app.user = data.result;
 
                 setTimeout(function() {
@@ -62,8 +91,8 @@ app.login = kendo.observable({
             },
             signin: function() {
                 var model = loginModel,
-                    email = model.email.toLowerCase(),
-                    password = model.password;
+                email = model.email.toLowerCase(),
+                password = model.password;
 
                 if (!model.validateData(model)) {
                     return false;
@@ -72,13 +101,13 @@ app.login = kendo.observable({
             },
             register: function() {
                 var model = loginModel,
-                    email = model.email.toLowerCase(),
-                    password = model.password,
-                    displayName = model.displayName,
-                    attrs = {
-                        Email: email,
-                        DisplayName: displayName
-                    };
+                email = model.email.toLowerCase(),
+                password = model.password,
+                displayName = model.displayName,
+                attrs = {
+                    Email: email,
+                    DisplayName: displayName
+                };
 
                 if (!model.validateData(model)) {
                     return false;
@@ -93,7 +122,15 @@ app.login = kendo.observable({
         });
 
     parent.set('loginModel', loginModel);
-    parent.set('afterShow', function() {
+    parent.set('afterShow', function(e) {
+        if (e && e.view && e.view.params && e.view.params.logout) {
+            if (localStorage) {
+                localStorage.setItem(rememberKey, null);
+            } else {
+                app[rememberKey] = null;
+            }
+            loginModel.set('logout', true);
+        }
         provider.Users.currentUser().then(successHandler, init);
     });
 })(app.login);

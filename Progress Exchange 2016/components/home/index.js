@@ -12,7 +12,7 @@ app.home = kendo.observable({
 // END_CUSTOM_CODE_home
 (function(parent) {
     var homeModel = kendo.observable({
-        dataSource: new kendo.data.DataSource({data: [{name: 'renato', message:'Atividade teste'}]}),
+        dataSource: new kendo.data.DataSource({data: []}),
         openLink: function(url) {
             window.open(url, '_system');
             if (window.event) {

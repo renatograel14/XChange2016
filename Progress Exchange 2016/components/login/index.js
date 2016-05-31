@@ -46,6 +46,7 @@ app.login = kendo.observable({
                 model = parent.loginModel || {},
                 logout = model.logout;
 
+
             if (logout) {
                 model.set('logout', null);
             }
@@ -57,7 +58,6 @@ app.login = kendo.observable({
                 var rememberedData = {
                     email: model.email,
                     password: model.password,
-                    indentity: data.result.Identity.Facebook
                 };
                 if (model.rememberme && rememberedData.email && rememberedData.password) {
                     if (localStorage) {
@@ -69,6 +69,7 @@ app.login = kendo.observable({
                 app.user = data.result;
 
                 setTimeout(function() {
+                    app.mobileApp.hideLoading();
                     app.mobileApp.navigate('components/' + redirect + '/view.html');
                 }, 0);
             } else {
@@ -100,6 +101,9 @@ app.login = kendo.observable({
                 if (!model.validateData(model)) {
                     return false;
                 }
+
+                app.mobileApp.showLoading();
+
                 provider.Users.login(email, password, successHandler, init);
             },
             facebookLogin: function(){

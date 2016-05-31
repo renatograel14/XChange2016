@@ -2,13 +2,17 @@
 
 app.agenda = kendo.observable({
     onShow: function() {},
-    afterShow: function() {}
+    afterShow: function() {},
+    user: app.user
 });
 
 // START_CUSTOM_CODE_agenda
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
 // END_CUSTOM_CODE_agenda
+
+
+// START_CUSTOM_CODE_agendaModel
 (function(parent) {
     var agendaProvider = app.data.localStorage,
     agendaModel = kendo.observable({
@@ -50,6 +54,4 @@ app.agenda = kendo.observable({
 
     parent.set('agendaModel', agendaModel);
 })(app.agenda);
-
-// START_CUSTOM_CODE_agendaModel
 // END_CUSTOM_CODE_agendaModel

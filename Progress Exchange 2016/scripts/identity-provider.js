@@ -19,15 +19,25 @@ var IdentityProvider = function (config) {
     this._getUserInfo = function(callback){
         var user = {};
         $.get('https://graph.facebook.com/v2.5/me',{
-            fields: 'id,name,picture',
+            fields: 'id,name,picture,email',
             access_token: _token,
             dataType: 'json'
         },callback);
     };
+
+    this.postPhoto = function(img){
+        
+    }
+
     this.getCurrentUser = function(){
         if(_currentUser) return _currentUser;
         throw "Need to getAccessToken() first";
     };
+    
+    this.postPhoto = function(){
+        
+    }
+
     this.getAccessToken = function (callback) {
         // Begin Authorization
         var authorize_url;

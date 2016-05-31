@@ -20,7 +20,6 @@
 				newItem.itemId = options.data.Id;
 				var localData = JSON.parse(localStorage["agenda"]);
 
-				console.log('added', newItem);
 				localData.push(newItem);
 				localStorage["agenda"] = JSON.stringify(localData);				
 				options.success(newItem);
@@ -31,7 +30,6 @@
 				options.success(localData);
 			},
 			destroy: function(options){
-				console.log('removed', options.data);
 				//apaga registro
 				var localData = JSON.parse(localStorage["agenda"]);
 				for(var i=0; i<localData.length; i++){

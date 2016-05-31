@@ -9,6 +9,9 @@ app.login = kendo.observable({
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
 // END_CUSTOM_CODE_login
+
+// START_CUSTOM_CODE_loginModel
+// Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 (function(parent) {
     var provider = app.data.demoAppBackend,
         mode = 'signin',
@@ -33,7 +36,6 @@ app.login = kendo.observable({
 
             var rememberedData = localStorage ? JSON.parse(localStorage.getItem(rememberKey)) : app[rememberKey];
             if (rememberedData && rememberedData.email && rememberedData.password) {
-
                 parent.loginModel.set('email', rememberedData.email);
                 parent.loginModel.set('password', rememberedData.password);
                 parent.loginModel.signin();
@@ -54,7 +56,8 @@ app.login = kendo.observable({
                 }
                 var rememberedData = {
                     email: model.email,
-                    password: model.password
+                    password: model.password,
+                    indentity: data.result.Identity.Facebook
                 };
                 if (model.rememberme && rememberedData.email && rememberedData.password) {
                     if (localStorage) {
@@ -99,6 +102,31 @@ app.login = kendo.observable({
                 }
                 provider.Users.login(email, password, successHandler, init);
             },
+            facebookLogin: function(){
+                var facebookConfig = {
+                    name: 'Facebook',
+                    loginMethodName: 'loginWithFacebook',
+                    endpoint: 'https://www.facebook.com/dialog/oauth',
+                    response_type: 'token',
+                    client_id: 1086764318010540,
+                    redirect_uri: "http://www.facebook.com/connect/login_success.html",
+                    access_type: 'online',
+                    scope: 'email,user_posts',
+                    display: 'touch'
+                };
+
+                var facebook = app.facebook = new IdentityProvider(facebookConfig);
+                app.mobileApp.showLoading();
+                facebook.getAccessToken(function (token) {
+                    provider.Users.loginWithFacebook(token).then(function () {
+                        app.mobileApp.hideLoading();
+                        provider.Users.currentUser(function(data){
+                            data.result.Identity.Facebook = facebook.getCurrentUser();
+                            successHandler(data);
+                        }, init);
+                    });
+                });
+            },
             register: function() {
                 var model = loginModel,
                 email = model.email.toLowerCase(),
@@ -134,8 +162,4 @@ app.login = kendo.observable({
         provider.Users.currentUser().then(successHandler, init);
     });
 })(app.login);
-
-// START_CUSTOM_CODE_loginModel
-// Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
-
 // END_CUSTOM_CODE_loginModel

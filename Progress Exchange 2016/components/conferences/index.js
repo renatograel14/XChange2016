@@ -9,6 +9,9 @@ app.conferences = kendo.observable({
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
 // END_CUSTOM_CODE_conferences
+
+
+// START_CUSTOM_CODE_conferencesModel
 (function(parent) {
     var dataProvider = app.data.demoAppBackend,
     agendaDataSource = app.data.localStorage,
@@ -86,6 +89,7 @@ app.conferences = kendo.observable({
         addItem: function() {
             console.log('adding...');
 
+            app.notification.show('Conferências adicionada à Agenda');
             agendaDataSource.dataSource.add(agendaDataSource.getAgendaItem(conferencesModel.currentItem));
             agendaDataSource.dataSource.sync();
 
@@ -159,6 +163,4 @@ app.conferences = kendo.observable({
         parent.set('conferencesModel', conferencesModel);
     }
 })(app.conferences);
-
-// START_CUSTOM_CODE_conferencesModel
 // END_CUSTOM_CODE_conferencesModel

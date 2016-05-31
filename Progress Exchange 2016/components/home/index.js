@@ -3,6 +3,7 @@
 app.home = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
+
 });
 
 // START_CUSTOM_CODE_home
@@ -11,18 +12,20 @@ app.home = kendo.observable({
 // END_CUSTOM_CODE_home
 (function(parent) {
     var homeModel = kendo.observable({
+        dataSource: new kendo.data.DataSource({data: [{name: 'renato', message:'Atividade teste'}]}),
         openLink: function(url) {
             window.open(url, '_system');
             if (window.event) {
                 window.event.preventDefault && window.event.preventDefault();
                 window.event.returnValue = false;
-            }
+            }   
         },
         reset: function(){
             app.data.localStorage.resetData();
             console.log('Data resetted');
-        }
-    });
+        },
+        user: 'test'
+    }); 
 
     parent.set('homeModel', homeModel);
 })(app.home);

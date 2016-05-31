@@ -1,4 +1,8 @@
 <div data-role="view" data-title="Login Exchange" data-layout="main-nonav" data-model="app.login" data-show="app.login.onShow" data-after-show="app.login.afterShow">
+    
+    <!-- START_CUSTOM_CODE_loginModel -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
     <div class="signin-view">
         <form>
             <ul data-role="listview" data-style="inset">
@@ -19,6 +23,9 @@
 
                 <a data-role="button" data-bind="events: { click: loginModel.toggleView }">Register</a>
 
+            </div>
+            <div class="button-group button-group-vertical">
+                <a data-role="button" class="primary" data-bind="events: { click: loginModel.facebookLogin }">Entrar com Facebook</a>
             </div>
         </form>
     </div>
@@ -50,9 +57,6 @@
     <div class="offline" align="center" style="display:none;">
         You are currently offline. Before using this app in offline mode you must initialize it while you are online
     </div>
-    <!-- START_CUSTOM_CODE_loginModel -->
-    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
-
     <!-- END_CUSTOM_CODE_loginModel -->
 
     <!-- START_CUSTOM_CODE_login -->
